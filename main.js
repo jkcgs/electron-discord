@@ -9,6 +9,10 @@ function createWindow () {
       webviewTag: true
     }
   })
+  win.webContents.session.setPermissionCheckHandler(async (webContents, permission, details) => true)
+  win.webContents.session.setPermissionRequestHandler(async (webContents, permission, callback, details) => {
+    callback(true)
+  })
   win.removeMenu()
   win.loadFile('index.html')
 
