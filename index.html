@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8">
     <title>Discord</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <style>
       html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden }
@@ -11,14 +10,23 @@
     </style>
   </head>
   <body>
-    <webview id="w" src="https://canary.discord.com/app" enableremotemodule="false" useragent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36" partition="persist:discord"></webview>
+    <webview 
+      id="w" src="https://canary.discord.com/app" enableremotemodule="false" 
+      partition="persist:discord" preload="./polyfill.js"
+      useragent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36">
+    </webview>
     <script>
+      const w = document.querySelector('webview')
+      const css = require('fs').readFileSync(require('path').join(__dirname, 'polyfill.css'), 'utf8')
       onload = () => {
-        const w = document.querySelector('webview')
         w.addEventListener('dom-ready', () => {
+          w.insertCSS(css)
           require('electron').ipcRenderer.on('devtools', () => {
             w[(w.isDevToolsOpened()?'close':'open')+'DevTools']()
-          });
+          })
+        })
+        w.addEventListener('page-title-updated', (event) => {
+          document.title = event.title
         })
       }
     </script>
