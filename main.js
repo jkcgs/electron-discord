@@ -1,4 +1,5 @@
-const { app, globalShortcut, shell,  BrowserWindow } = require('electron')
+const { app, shell,  BrowserWindow } = require('electron')
+const localShortcut = require('electron-localshortcut')
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -16,8 +17,11 @@ function createWindow () {
   win.removeMenu()
   win.loadFile('index.html')
 
-  globalShortcut.registerAll(['CommandOrControl+Shift+I', 'F12'], () => {
+  localShortcut.register('F12', () => {
     win.webContents.send('devtools');
+  })
+  localShortcut.register('CommandOrControl+Shift+I', () => {
+    win.webContents.toggleDevTools();
   })
 }
 

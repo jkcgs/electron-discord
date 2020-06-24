@@ -1,8 +1,19 @@
 {
     "name": "electron-discord",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "main.js",
+    "repository": {
+        "url": "https://github.com/jkcgs/electron-discord"
+    },
+    "author": {
+        "name": "makzk"
+    },
+    "license": "WTFPL",
     "scripts": {
         "start": "electron ."
+    },
+    "dependencies": {
+        "electron": "^9.0.5",
+        "electron-localshortcut": "^3.2.1"
     }
 }
